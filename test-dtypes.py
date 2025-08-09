@@ -15,15 +15,17 @@ available = [getattr(torch, n) for n in names if hasattr(torch, n)]
 print("Floating dtypes in this torch build:",
       [str(dt).replace("torch.","") for dt in available])
 
-# 2) Which of those can be allocated on CUDA (NVIDIA)?
+# 2) Which of those can actually perform operations on CUDA?
 cuda_ok = []
 for dt in available:
     try:
-        torch.empty(1, device="cuda", dtype=dt)
+        a = torch.tensor([1.0], device="cuda", dtype=dt)
+        b = torch.tensor([2.0], device="cuda", dtype=dt)
+        c = a + b  # Simple addition test
         cuda_ok.append(dt)
     except Exception:
         pass
-print("Alloc works on CUDA:",
+print("Works on CUDA:",
       [str(dt).replace("torch.","") for dt in cuda_ok])
 
 # (Optional) TF32 isn't a dtype—just a matmul mode for FP32:
