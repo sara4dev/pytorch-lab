@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pytorch-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pytorch-lab
+  template:
+    metadata:
+      labels:
+        app: pytorch-lab
+    spec:
+      # If you use GPU Operator with a RuntimeClass, uncomment:
+      # runtimeClassName: nvidia
+      containers:
+        - name: torch
+          image: nvcr.io/nvidia/pytorch:24.12-py3   # any recent NGC PyTorch image works
+          imagePullPolicy: IfNotPresent
+          command: ["bash","-lc","sleep infinity"]
+          tty: true
+          stdin: true
+          resources:
+            limits:
+              nvidia.com/gpu: 1    # bump to 2/4/8 as needed
+              cpu: "4"
+              memory: "16Gi"
+          volumeMounts:
+            - name: work
+              mountPath: /workspace
+      volumes:
+        - name: work
+          emptyDir: {}
+      # If your GPU nodes are labeled, you can pin with:
+      # nodeSelector:
+      #   nvidia.com/gpu.present: "true"
+      # If your cluster taints GPU nodes, add a matching toleration.
