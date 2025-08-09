@@ -23,9 +23,7 @@ spec:
           stdin: true
           resources:
             limits:
-              nvidia.com/gpu: 1    # bump to 2/4/8 as needed
-              cpu: "4"
-              memory: "16Gi"
+              nvidia.com/gpu: 1
           volumeMounts:
             - name: work
               mountPath: /workspace

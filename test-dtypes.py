@@ -1,5 +1,10 @@
 import torch
 
+print("torch.__version__", torch.__version__)
+print("torch.cuda.is_available()", torch.cuda.is_available())
+print("torch.cuda.get_device_name(0)", torch.cuda.get_device_name(0))
+print("torch.cuda.get_device_capability(0)", torch.cuda.get_device_capability(0))
+
 # 1) What float dtypes exist in *this* torch build?
 names = [
     "float64", "float32", "bfloat16", "float16",
